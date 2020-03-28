@@ -24,42 +24,32 @@ public class validacao {
 	public int getQtdLinhas() {
 		return qtdLinhas;
 	}
-
+	
+	/** Verifica se a quantidade de linhas informadas é a mesma salva na tabela **/
 	public void validaLinhas() {
 		String path = "C:\\Data\\Arquivo.txt";
 		File arquivoLeitura = new File(path);
-			try {
-				LineNumberReader linhaLeitura = new LineNumberReader(new FileReader(path));
-				linhaLeitura.skip(arquivoLeitura.length());
-				int qtdLinha = linhaLeitura.getLineNumber();
-				qtdLinhas = qtdLinha -1;
-				
-				
-							
-				linhaLeitura.close();
+		try {
+			LineNumberReader linhaLeitura = new LineNumberReader(new FileReader(path));
+			linhaLeitura.skip(arquivoLeitura.length());
+			int qtdLinha = linhaLeitura.getLineNumber();
+			qtdLinhas = qtdLinha -1;
+			linhaLeitura.close();
 		} catch (IOException e) {
-			
 			e.printStackTrace();
 		}
-	
 	}
-	
+
+	/** Verifica se todos os campos da tabela estão preenchidos e nem um é nulo**/
 	public void validaTabelas() {
-		
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
-		
 		try {
-			conn = DB.getConnection();
-			
+			conn = DB.getConnection();	
 			st = conn.createStatement();
 			rs = st.executeQuery("select * from rg_arquivo");
-
-			
 			while (rs.next()) {
-				
 				if (rs.getInt("id_registro") == 0) {
 					System.out.println("Coluna id_registro com valor nulo ");
 					System.exit(0);
@@ -79,52 +69,30 @@ public class validacao {
 					System.out.println("Coluna conteudo com valor nulo ");
 					System.exit(0);
 				}
-		
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			} finally {
-				
 			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
-	
+	/** Verifica se o conteudo salvo na tabela segue a sequencia correta **/
 	public void validaConteudo() {
-		
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		
-		
 		try {
-			conn = DB.getConnection();
-			
+			conn = DB.getConnection();	
 			st = conn.createStatement();
 			rs = st.executeQuery("select * from rg_arquivo ");
-			
-			
-			
 			while (rs.next()) {
-				if (rs.getString("conteudo").contains("1234567891012345678910")) {
-					
-				}else {
+				if (!rs.getString("conteudo").contains("1234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910123456789101234567891012345678910")) {
 					System.out.println("Sequência do conteúdo inválida. ");
 					System.exit(0);
 				}
-				}
-		
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
-			} finally {
-				
-			}
-	}
-	
-	
-	
-	
-	
-	
+			}	
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} 
+	}	
 }
 
 
